@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v2
+
+      - name: Sync dependencies
+        run: uv sync --frozen
+
+      - name: Run Ruff
+        run: uv run ruff check .
+
+      - name: Run Black
+        run: uv run black --check .
+
+      - name: Run Tests
+        run: uv run pytest -q
+
+      - name: Run DVC pipeline
+        run: uv run dvc repro --force
+
+      - name: Upload model artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: model-joblib
+          path: artifacts/model.joblib
+          if-no-files-found: warn
+
+  build-serving-image:
+    needs: lint-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build serving image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: src/serving/Dockerfile
+          push: false
+          load: true
+          tags: mlops-pipeline-template/ml-api:ci

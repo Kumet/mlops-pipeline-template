@@ -1,0 +1,16 @@
+services:
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:latest
+    command: mlflow ui --host 0.0.0.0 --port 5000 --backend-store-uri file:/mlruns
+    ports: ["${MLFLOW_PORT:-5000}:5000"]
+    volumes:
+      - ./mlruns:/mlruns
+  ml-api:
+    build:
+      context: .
+      dockerfile: src/serving/Dockerfile
+    ports: ["${API_PORT:-8001}:8001"]
+    volumes:
+      - ./:/app
+    depends_on:
+      - mlflow

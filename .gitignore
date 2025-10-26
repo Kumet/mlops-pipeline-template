@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.dvc/tmp/
+mlruns/
+outputs/
+data/raw/
+data/interim/
+data/processed/
+artifacts/model.joblib
+.history/
+.DS_Store
