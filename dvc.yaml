@@ -1,0 +1,28 @@
+stages:
+  make_dataset:
+    cmd: uv run python src/data/make_dataset.py data/raw/iris.csv
+    deps:
+      - src/data/make_dataset.py
+    outs:
+      - data/raw/iris.csv
+  build_features:
+    cmd: uv run python src/features/build_features.py data/raw/iris.csv data/processed/features.parquet
+    deps:
+      - src/features/build_features.py
+      - data/raw/iris.csv
+    outs:
+      - data/processed/features.parquet
+  train:
+    cmd: uv run python src/models/train.py
+    deps:
+      - src/models/train.py
+      - data/processed/features.parquet
+      - configs/train.yaml
+    outs:
+      - artifacts/model.joblib
+  evaluate:
+    cmd: uv run python src/evaluation/evaluate.py
+    deps:
+      - src/evaluation/evaluate.py
+      - artifacts/model.joblib
+      - data/processed/features.parquet

@@ -1,0 +1,9 @@
+.venv
+.git
+.dvc
+.dvcignore
+.DS_Store
+mlruns
+outputs
+data
+artifacts

@@ -1,0 +1,31 @@
+# uv 管理（dev依存含む）
+[project]
+name = "mlops-pipeline-template"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+  "hydra-core",
+  "mlflow",
+  "dvc",
+  "prefect",
+  "scikit-learn",
+  "numpy",
+  "joblib",
+  "fastapi",
+  "uvicorn[standard]",
+  "pydantic",
+]
+[tool.uv]
+dev-dependencies = [
+  "pytest",
+  "ruff",
+  "black",
+  "pre-commit",
+]
+[tool.black]
+line-length = 100
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+select = ["E","F","I","B","UP"]
+exclude = ["dist","build",".venv",".dvc","mlruns"]

@@ -1,0 +1,66 @@
+schema: '2.0'
+stages:
+  make_dataset:
+    cmd: uv run python src/data/make_dataset.py data/raw/iris.csv
+    deps:
+    - path: src/data/make_dataset.py
+      hash: md5
+      md5: 6db29923db32702495e2618f9dfca2a8
+      size: 377
+    outs:
+    - path: data/raw/iris.csv
+      hash: md5
+      md5: 4d301abed5efe50eccda350cde38e0eb
+      size: 2777
+  build_features:
+    cmd: uv run python src/features/build_features.py data/raw/iris.csv
+      data/processed/features.parquet
+    deps:
+    - path: data/raw/iris.csv
+      hash: md5
+      md5: 4d301abed5efe50eccda350cde38e0eb
+      size: 2777
+    - path: src/features/build_features.py
+      hash: md5
+      md5: 4a7c501c6c456ee178a4e9a5f99f84a5
+      size: 298
+    outs:
+    - path: data/processed/features.parquet
+      hash: md5
+      md5: ba26f1d98d8d55de0d603472b0079c04
+      size: 5131
+  train:
+    cmd: uv run python src/models/train.py
+    deps:
+    - path: configs/train.yaml
+      hash: md5
+      md5: 01fef1ca8400cacde07af02c8247c04a
+      size: 111
+    - path: data/processed/features.parquet
+      hash: md5
+      md5: ba26f1d98d8d55de0d603472b0079c04
+      size: 5131
+    - path: src/models/train.py
+      hash: md5
+      md5: 84f18c884d7fb5f4fb34042116f05b96
+      size: 1449
+    outs:
+    - path: artifacts/model.joblib
+      hash: md5
+      md5: e1e0ffa169008bae21c3272135630e8e
+      size: 991
+  evaluate:
+    cmd: uv run python src/evaluation/evaluate.py
+    deps:
+    - path: artifacts/model.joblib
+      hash: md5
+      md5: e1e0ffa169008bae21c3272135630e8e
+      size: 991
+    - path: data/processed/features.parquet
+      hash: md5
+      md5: ba26f1d98d8d55de0d603472b0079c04
+      size: 5131
+    - path: src/evaluation/evaluate.py
+      hash: md5
+      md5: d9bc3a148779f17992d91e9016d1a6bb
+      size: 837

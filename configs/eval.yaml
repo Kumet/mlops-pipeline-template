@@ -1,0 +1,5 @@
+eval:
+  metrics:
+    - accuracy
+  thresholds:
+    accuracy: 0.85

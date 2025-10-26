@@ -1,0 +1,4 @@
+data:
+  raw_path: data/raw/iris.csv
+  interim_path: data/interim/iris.parquet
+  features_path: data/processed/features.parquet
