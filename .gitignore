@@ -10,3 +10,6 @@ data/processed/
 artifacts/model.joblib
 .history/
 .DS_Store
+.terraform/
+*.tfstate
+*.tfstate.*

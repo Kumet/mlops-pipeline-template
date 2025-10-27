@@ -1,0 +1,9 @@
+# Copy to terraform.tfvars and customize.
+
+aws_region             = "us-east-1"
+aws_ecr_repository     = "mlops-serving"
+gcp_project            = "your-gcp-project"
+gcp_region             = "us-central1"
+gcp_registry_repository = "mlops"
+image_name             = "mlops-serving"
+mlflow_tracking_uri    = "https://mlflow.your-domain.example"

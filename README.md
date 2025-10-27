@@ -36,6 +36,33 @@ docker compose up --build ml-api
   ```
 - `uvx` を併用しているので、ローカルに Ruff が入っていなくても `make format` で統一フォーマットを適用できます。
 
+## Release Workflow (Template)
+- タグ `v*` を push すると `.github/workflows/release-deploy.yml` が起動し、DVC/Prefect の再検証・コンテナビルド・AWS ECR / GCP Cloud Run へのデプロイを **テンプレート** として実行します。
+- デフォルトでは `ENABLE_DEPLOY=false` で安全にスキップされます。実際にデプロイしたい場合は以下を実行:
+  ```bash
+  gh workflow run release-deploy.yml \
+    --ref v1.0.0 \
+    --field enable_deploy=true \
+    --field enable_terraform_apply=true
+  ```
+- 事前に以下のシークレット設定が必要です（例）:
+  - `AWS_DEPLOY_ROLE_ARN` : GitHub Actions から Assume Role するための IAM ロール
+  - `AWS_ACCOUNT_ID` : ECR プッシュ時に使用
+  - `GCP_SA_KEY` : Cloud Run / Artifact Registry 用サービスアカウント JSON
+
+## Infrastructure as Code (Template)
+- `infra/terraform/` 配下に AWS ECR / GCP Cloud Run を構築する Terraform 雛形を追加しています。
+- `terraform.tfvars.example` をコピーして各種値を設定すると、以下の手順で計画・適用できます（**デフォルトはローカル backend**）:
+  ```bash
+  cd infra/terraform
+  cp terraform.tfvars.example terraform.tfvars
+  terraform init
+  terraform plan
+  # 実際に構築する場合のみ
+  terraform apply
+  ```
+- GitHub Actions の Terraform ジョブ (`ENABLE_TERRAFORM_APPLY=true`) で CI から `plan/apply` も可能ですが、デフォルトではドライランとなります。
+
 ## Tech
 - Hydra / MLflow / DVC / Prefect / scikit-learn
 - FastAPI Serving, Docker, GitHub Actions
