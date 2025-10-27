@@ -26,3 +26,5 @@ stages:
       - src/evaluation/evaluate.py
       - artifacts/model.joblib
       - data/processed/features.parquet
+    metrics:
+      - artifacts/metrics.json

@@ -18,6 +18,13 @@ docker compose up --build ml-api
 - 直接ビルドする場合: `docker build -f src/serving/Dockerfile --build-arg FLAVOR=gpu -t mlops/serving:gpu .`
 - CPU に戻す場合は `SERVING_FLAVOR=cpu` に設定します（デフォルト値）。
 
+- Prefect フローで学習→評価→MLflow 登録→API ロールアウト判定まで自動化できます:
+  ```bash
+  uv run python flows/train_register_deploy.py
+  # 例: GPU サービングイメージもビルドする場合
+  uv run python flows/train_register_deploy.py -- --build-image true --flavor gpu --image-name mlops-serving:gpu
+  ```
+
 ## Tech
 - Hydra / MLflow / DVC / Prefect / scikit-learn
 - FastAPI Serving, Docker, GitHub Actions
