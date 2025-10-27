@@ -27,19 +27,19 @@ stages:
     outs:
     - path: data/processed/features.parquet
       hash: md5
-      md5: ba26f1d98d8d55de0d603472b0079c04
-      size: 5131
+      md5: 2e73c70bca884251c932a72e9b579655
+      size: 5202
   train:
     cmd: uv run python src/models/train.py
     deps:
     - path: configs/train.yaml
       hash: md5
-      md5: 01fef1ca8400cacde07af02c8247c04a
-      size: 111
+      md5: 570e6b7704414288561658823d38751b
+      size: 137
     - path: data/processed/features.parquet
       hash: md5
-      md5: ba26f1d98d8d55de0d603472b0079c04
-      size: 5131
+      md5: 2e73c70bca884251c932a72e9b579655
+      size: 5202
     - path: src/models/train.py
       hash: md5
       md5: c0a858f7809f5774515c033d6808f30b
@@ -58,9 +58,14 @@ stages:
       size: 991
     - path: data/processed/features.parquet
       hash: md5
-      md5: ba26f1d98d8d55de0d603472b0079c04
-      size: 5131
+      md5: 2e73c70bca884251c932a72e9b579655
+      size: 5202
     - path: src/evaluation/evaluate.py
       hash: md5
-      md5: 8f35732f61774886fff9b0e0c47e535d
-      size: 838
+      md5: e774aa727bd66ad62349c1a4f5894d40
+      size: 1228
+    outs:
+    - path: artifacts/metrics.json
+      hash: md5
+      md5: d03ae2f463be78cf1bc90e9967fcca18
+      size: 22
