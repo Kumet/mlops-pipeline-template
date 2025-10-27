@@ -25,6 +25,17 @@ docker compose up --build ml-api
   uv run python flows/train_register_deploy.py -- --build-image true --flavor gpu --image-name mlops-serving:gpu
   ```
 
+### Developer Experience
+- `Makefile` でよく使うタスクをワンライン化しています:
+  ```bash
+  make install    # uv sync --frozen
+  make lint       # Ruff + Black
+  make test       # pytest
+  make dvc        # dvc repro
+  make deploy FLAVOR=gpu IMAGE_NAME=mlops-serving:gpu  # Prefect + Docker build
+  ```
+- `uvx` を併用しているので、ローカルに Ruff が入っていなくても `make format` で統一フォーマットを適用できます。
+
 ## Tech
 - Hydra / MLflow / DVC / Prefect / scikit-learn
 - FastAPI Serving, Docker, GitHub Actions
