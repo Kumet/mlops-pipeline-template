@@ -5,7 +5,7 @@ version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
   "hydra-core",
-  "mlflow",
+  "mlflow-skinny",
   "dvc",
   "prefect",
   "scikit-learn",

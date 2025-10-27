@@ -54,6 +54,8 @@ jobs:
         with:
           context: .
           file: src/serving/Dockerfile
+          build-args: |
+            FLAVOR=cpu
           push: false
           load: true
           tags: mlops-pipeline-template/ml-api:ci
