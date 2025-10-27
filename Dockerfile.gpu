@@ -1,10 +1,16 @@
-# GPU用雛形（将来の学習/推論を切替可能に）
-FROM nvidia/cuda:12.2.0-cudnn8-runtime-ubuntu22.04
+# GPU用の参考 Dockerfile。src/serving/Dockerfile の `FLAVOR=gpu` と同等の構成です。
+FROM --platform=linux/amd64 nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get install -y python3 python3-pip && rm -rf /var/lib/apt/lists/*
-RUN pip3 install --no-cache-dir uv
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends python3 python3-pip build-essential \
+    && ln -sf /usr/bin/python3 /usr/bin/python \
+    && ln -sf /usr/bin/pip3 /usr/bin/pip \
+    && rm -rf /var/lib/apt/lists/*
+ENV UV_LINK_MODE=copy
 WORKDIR /app
-COPY pyproject.toml ./
+RUN python -m pip install --no-cache-dir cmake uv
+COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen
 COPY . .
-CMD ["uv", "run", "python", "-c", "print('GPU container ready')"]
+EXPOSE 8001
+CMD ["uv", "run", "uvicorn", "src.serving.app:app", "--host", "0.0.0.0", "--port", "8001"]

@@ -5,8 +5,8 @@ stages:
     deps:
     - path: src/data/make_dataset.py
       hash: md5
-      md5: 6db29923db32702495e2618f9dfca2a8
-      size: 377
+      md5: 4ffb56f351bf619cc11bf5dc074b1f61
+      size: 362
     outs:
     - path: data/raw/iris.csv
       hash: md5
@@ -22,8 +22,8 @@ stages:
       size: 2777
     - path: src/features/build_features.py
       hash: md5
-      md5: 4a7c501c6c456ee178a4e9a5f99f84a5
-      size: 298
+      md5: 047657c0fed15cc8fbf9e1b476a302c6
+      size: 303
     outs:
     - path: data/processed/features.parquet
       hash: md5
@@ -42,8 +42,8 @@ stages:
       size: 5131
     - path: src/models/train.py
       hash: md5
-      md5: 84f18c884d7fb5f4fb34042116f05b96
-      size: 1449
+      md5: c0a858f7809f5774515c033d6808f30b
+      size: 1445
     outs:
     - path: artifacts/model.joblib
       hash: md5
@@ -62,5 +62,5 @@ stages:
       size: 5131
     - path: src/evaluation/evaluate.py
       hash: md5
-      md5: d9bc3a148779f17992d91e9016d1a6bb
-      size: 837
+      md5: 8f35732f61774886fff9b0e0c47e535d
+      size: 838

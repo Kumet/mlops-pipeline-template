@@ -14,6 +14,10 @@ docker compose up --build ml-api
 # POST /predict に features を投げる
 ```
 
+- GPU でサービングする場合は `.env` の `SERVING_FLAVOR=gpu` に変更するか、`SERVING_FLAVOR=gpu docker compose up --build ml-api` を実行してください。
+- 直接ビルドする場合: `docker build -f src/serving/Dockerfile --build-arg FLAVOR=gpu -t mlops/serving:gpu .`
+- CPU に戻す場合は `SERVING_FLAVOR=cpu` に設定します（デフォルト値）。
+
 ## Tech
 - Hydra / MLflow / DVC / Prefect / scikit-learn
 - FastAPI Serving, Docker, GitHub Actions
